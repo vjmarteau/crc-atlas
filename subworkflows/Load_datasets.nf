@@ -888,6 +888,7 @@ workflow Load_datasets {
                 .collect()
             )
 
+
         ch_Harmonize_datasets = Harmonize_datasets.out.artifacts
             .flatten()
             .filter{ it -> it.name.contains(".h5ad") }
