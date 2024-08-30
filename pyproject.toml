@@ -1,0 +1,29 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project]
+name = "sc_atlas_helpers"
+version = "1.0.0"
+description = "Custom package with helper functions to integrate and analyse single cell data for colorectal cancer"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [
+    {name = "Valentin Marteau"},
+]
+maintainers = [
+    {name = "Valentin Marteau", email = "valentinmarteau7@gmail.com"},
+]
+urls.Source = "https://gitlab.i-med.ac.at/icbi-lab/crc-atlas"
+urls.Home-page = "https://gitlab.i-med.ac.at/icbi-lab/crc-atlas"
+dependencies = [
+    # for debug logging (referenced from the issue template)
+    "session-info",
+    "matplotlib",
+    "pandas",
+    "altair>=5.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ['src/sc_atlas_helpers']
