@@ -17,6 +17,7 @@ include { JUPYTERNOTEBOOK as Bian_2018_Science;
           JUPYTERNOTEBOOK as Han_2020_Nature;
           JUPYTERNOTEBOOK as Harmon_2023_Nat_Cancer;
           JUPYTERNOTEBOOK as He_2020_Genome_Biol;
+          JUPYTERNOTEBOOK as HTAPP_HTAN;
           JUPYTERNOTEBOOK as Huang_2024_Nat_Cancer;
           JUPYTERNOTEBOOK as James_2020_Nat_Immunol;
           JUPYTERNOTEBOOK as Ji_2024_Cancer_Lett;
@@ -35,7 +36,6 @@ include { JUPYTERNOTEBOOK as Bian_2018_Science;
           JUPYTERNOTEBOOK as MUI_Innsbruck;
           JUPYTERNOTEBOOK as Parikh_2019_Nature;
           JUPYTERNOTEBOOK as Pelka_2021_Cell;
-          JUPYTERNOTEBOOK as Pelka_2021_HTAN;
           JUPYTERNOTEBOOK as Qi_2022_Nat_Commun;
           JUPYTERNOTEBOOK as Qian_2020_Cell_Res;
           JUPYTERNOTEBOOK as Qin_2023_Cell_Rep_Med;
@@ -281,6 +281,19 @@ workflow Load_datasets {
             ch_dataloader
             )
         ch_He_2020_Genome_Biol = He_2020_Genome_Biol.out.artifacts
+            .flatten()
+            .filter{ it -> it.name.contains(".h5ad") }
+
+        
+         HTAPP_HTAN(
+            Channel.value([
+                [id: "HTAPP_HTAN"],
+                file("${baseDir}/analyses/01_dataloader/HTAPP_HTAN.py", checkIfExists: true)
+            ]),
+            dataloader_nxfvars_params,
+            ch_dataloader
+            )
+        ch_HTAPP_HTAN = HTAPP_HTAN.out.artifacts
             .flatten()
             .filter{ it -> it.name.contains(".h5ad") }
 
@@ -538,19 +551,6 @@ workflow Load_datasets {
         ch_Pelka_2021_Cell = Pelka_2021_Cell.out.artifacts
             .flatten()
             .filter { it -> it.name.contains(".h5ad") }
-
-
-        Pelka_2021_HTAN(
-            Channel.value([
-                [id: "Pelka_2021_HTAN"],
-                file("${baseDir}/analyses/01_dataloader/Pelka_2021_HTAN.py", checkIfExists: true)
-            ]),
-            dataloader_nxfvars_params,
-            ch_dataloader
-            )
-        ch_Pelka_2021_HTAN = Pelka_2021_HTAN.out.artifacts
-            .flatten()
-            .filter{ it -> it.name.contains(".h5ad") }
 
 
         Qi_2022_Nat_Commun(
@@ -826,6 +826,7 @@ workflow Load_datasets {
             ch_Han_2020_Nature,
             ch_Harmon_2023_Nat_Cancer,
             ch_He_2020_Genome_Biol,
+            ch_HTAPP_HTAN,
             ch_Huang_2024_Nat_Cancer,
             ch_James_2020_Nat_Immunol,
             ch_Ji_2024_Cancer_Lett,
@@ -844,7 +845,6 @@ workflow Load_datasets {
             ch_MUI_Innsbruck,
             ch_Parikh_2019_Nature,
             ch_Pelka_2021_Cell,
-            ch_Pelka_2021_HTAN,
             ch_Qi_2022_Nat_Commun,
             ch_Qian_2020_Cell_Res,
             ch_Qin_2023_Cell_Rep_Med,
