@@ -1,0 +1,390 @@
+study_id:
+  values:
+  - author_year_journal
+  description: 'Unique ID composed of first author, year, and journal'
+  category: study_meta
+dataset:
+  values:
+  description: 'Studies can hold multiple datasets'
+  category: study_meta
+sample_id:
+  values:
+  - 'patient_id + sample_type + replicate + enrichment + extra_value'
+  description: 'Unique ID composed of patient_id, sample_type, replicate, enrichment,
+    plus extra val if necessary to make id unique for dataset'
+  category: sample_meta
+sample_type:
+  values:
+  - tumor
+  - normal
+  - blood
+  - metastasis
+  - lymph node
+  - polyp
+  description: 'Type of sample'
+  category: sample_meta
+tumor_source:
+  values:
+  - core
+  - border
+  - normal
+  description: 'Source of tumor sample'
+  category: sample_meta
+replicate:
+  values:
+  - no_rep
+  - rep1
+  - rep2
+  - rep3
+  - repx
+  description: 'Number of replicates per sample'
+  category: sample_meta
+sample_tissue:
+  values:
+  - colon
+  - liver
+  - lymph node
+  - blood
+  - other
+  description: 'Type of tissue origin'
+  category: sample_meta
+anatomic_region: #primary_tumor_location_simple
+  values:
+  - proximal colon
+  - distal colon
+  description: 'Right-sided colon cancers (RSCC or proximal tumors) occur in the cecum,
+    ascending colon, hepatic flexure and/or transverse colon, while left-sided colon
+    cancers (LSCC or distal tumors) arise in the splenic flexure, descending colon,
+    and/or sigmoid colon.'
+  category: sample_meta
+anatomic_location: #primary_tumor_location? #anatomic_region
+  values:
+  - cecum #proximal
+  - ascending colon #proximal
+  - hepatic flexure #proximal
+  - transverse colon #proximal
+  - splenic flexure #distal
+  - descending colon #distal
+  - sigmoid colon #distal
+  - rectosigmoid junction #distal
+  - rectum #distal
+  description: 'Location of primary tumor in the large intestine, consisting of the
+    cecum, colon (divided into four sections), and rectum'
+  category: sample_meta
+tumor_stage_TNM:
+  values:
+  - '0'
+  - I
+  - IIA
+  - IIB
+  - IIC
+  - IIIA
+  - IIIB
+  - IIIC
+  - IVA
+  - IVB
+  - IVC
+  description: 'Aggregated tumor stage according to the TNM sytem (see subsequent
+    columns): T refers to the size and extent of the main/primary tumor, N refers
+    to the number of nearby lymph nodes that have cancer, M refers to whether the
+    cancer has metastasized. Comment: The stage of a cancer describes the size of
+    a tumor and how far it has spread from where it originated
+    See: https://www.cancer.net/cancer-types/colorectal-cancer/stages#:~:text=T4a%3A%20The%20tumor%20has%20grown,to%20other%20organs%20or%20structures.'
+  category: sample_meta
+tumor_stage_TNM_T:
+  values:
+  - Tx
+  - T0
+  - T1
+  - T2
+  - T3
+  - T4a
+  - T4b
+  - T4
+  description: 'Primary tumor (T): TX: Main tumor cannot be measured. T0: Main tumor
+    cannot be found. T1, T2, T3, T4: Refers to the size and/or extent of the main/primary
+    tumor. Ts may be further divided to provide more detail, such as T3a and T3b.'
+  category: sample_meta
+tumor_stage_TNM_N:
+  values:
+  - Nx
+  - N0
+  - N1a
+  - N1b
+  - N1c
+  - N2a
+  - N2b
+  - N1
+  - N2
+  description: 'Regional lymph nodes (N): NX: Cancer in nearby lymph nodes cannot
+    be measured. N0: There is no cancer in nearby lymph nodes. N1, N2, N3: Refers
+    to the number and location of lymph nodes that contain cancer.'
+  category: sample_meta
+tumor_stage_TNM_M:
+  values:
+  - Mx
+  - M0
+  - M1a
+  - M1b
+  - M1c
+  - M1
+  description: 'Distant metastasis (M): MX: Metastasis cannot be measured. M0: Cancer
+    has not spread to other parts of the body. M1: Cancer has spread to other parts
+    of the body.'
+  category: sample_meta
+tumor_size:
+  values:
+  - Int64
+  description: 'Largest horizontal tumor diameter in cm'
+tumor_dimensions:
+  values:
+  - 5x4x2cm
+  description: 'Dimensions of tumor in cm^3'
+  category: sample_meta
+tumor_grade:
+  values:
+  - GX
+  - G1
+  - G2
+  - G3
+  - G4
+  description: 'Comment: The grade describes the appearance of the cancerous cells.
+    Grade X: Grade cannot be assessed (undetermined grade). Grade 1: Well differentiated
+    (low grade). Grade 2: Moderately differentiated (intermediate grade). Grade 3:
+    Poorly differentiated (high grade). Grade 4: Undifferentiated (high grade)'
+  category: sample_meta
+histological_type:
+  values:
+  - adenocarcinoma
+  - mucinous adenocarcinoma
+  - signet ring cell carcinoma
+  - medullary carcinoma
+  - neuroendocrine carcinoma
+  - adenosquamous carcinoma
+  - normal colon
+  - sessile serrated lesions
+  - hyperplastic polyp
+  - tubular conventional adenoma
+  - tubulovillous conventional adenoma
+  - villous conventional adenoma
+  description: 'CRC is a significantly heterogeneous tumor with three major histological
+    subtypes: adenocarcinoma (AC), mucinous AC (MAC), and signet ring cell carcinoma (SRCC). Whereas
+    typical ACs are the most common cancers of the colorectum, the two other pathological
+    subtypes are rare and have characteristics distinct from those of AC, including
+    a younger age of onset, more advanced stage, and increased likelihood of lymph
+    node and peritoneal metastases upon presentation. See: DOI: 10.1007/s11888-015-0280-7
+      Colorectal polyps are classified histologically as neoplastic (adenoma)
+    or non-neoplastic. Non-neoplastic: Hyperplastic polyps, Hamartomas, Lymphoid aggregates,
+    Inflammatory polyps. Neoplastic: Tubular adenoma, Tubulovillous adenomas, Villous
+    adenoma'
+  category: sample_meta
+microsatellite_status:
+  values:
+  - MSS
+  - MSI
+  - MSI-H
+  - MSI-L
+  description: 'Microsatellite Instability (MSI) or Stable (MSS), not sure if additional
+    MSI-High (MSI-H), MSI-Low (MSI-L) feasable. mismatch repair-deficient (MMRd): MSI; mismatch repair-proficient (MMRp): MSS
+    see: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4594190/ '
+  category: sample_meta
+mismatch_repair_deficiency_status:
+  values:
+  - dMMR
+  - pMMR
+driver_mutation_or_marker_status:
+  values:
+  - wt
+  - mut
+  - neg
+  - pos
+  description: Any known common driver mutations.'
+  category: sample_meta
+patient_id:
+  values:
+  - patient_id
+  description: 'Unique ID for each patient'
+  category: patient_meta
+medical_condition:
+  values:
+    - colorectal cancer
+    - colorectal polyp
+    - healthy
+  description: 'CRC including matched normal, or healthy colon'
+  category: patient_meta
+sex:
+  values:
+  - female
+  - male
+  description: 'Reportet patient sex'
+  category: patient_meta
+age:
+  type: Int64
+  min: 0
+  max: 120
+  description: 'Reportet patient age as integer'
+  category: patient_meta
+ethnicity:
+  values:
+  - asian
+  - black or african american
+  - hispanic
+  - white
+  - other
+  description: 'Reportet patient ethnicity. Will need to harmonize'
+  category: patient_meta
+treatment_status_before_resection:
+  values:
+  - treated
+  - naive
+  description: 'treatment status before sample resection'
+  category: patient_meta
+treatment_drug:
+  values:
+  - spartalizumab|dabrafenib|trametinib
+  - naive
+  description: 'Used treatment if known'
+  category: patient_meta
+treatment_response:
+  values:
+  - responder
+  - non-responder
+  description: 'If patient was treated known response to it'
+  category: patient_meta
+RECIST:
+  values:
+  - 'CR: complete response'
+  - 'PR: partial response'
+  - 'PD: progressive disease'
+  - 'SD: stable disease'
+  - 'NE: inevaluable'
+  description: 'Response Evaluation Criteria in Solid Tumors (RECIST) Score'
+  category: patient_meta
+platform:
+  values:
+  - 10x 5' v2
+  - 10x 3' v2
+  - 10x 3' v3
+  - smartseq2
+  - bd rhapsody
+  description: 'Protocol that was used for single cell sequencing'
+  category: study_meta
+cellranger_version:
+  values:
+  - 3.0.2
+  description: 'Used cellranger version for 10X data'
+  category: study_meta
+reference_genome:
+  values:
+  - ensembl.v#
+  - gencode.v#
+  description: 'Used reference genome version for mapping'
+  category: study_meta
+matrix_type:
+  values:
+  - raw counts
+  - processed counts
+  - log norm
+  description: 'Type of available matrix data'
+  category: study_meta
+enrichment_cell_types:
+  values:
+  - naive
+  - CD45+
+  - CD45-
+  description: 'Type of enrichment prior single cell sequencing'
+  category: study_meta
+tissue_cell_state:
+  values:
+  - fresh
+  - frozen
+  description: 'Type of processed tissue'
+  category: study_meta
+tissue_dissociation:
+  values:
+  - enzymatic
+  - mechanical
+  - both
+  description: 'Used protocol for tissue dissociation'
+  category: study_meta
+tissue_processing_lab:
+  values:
+  - Hacohen lab
+  - Regev lab
+  description: 'Lab that processed tissue'
+  category: study_meta
+hospital_location:
+  values:
+  - Massachusetts General Hospital Cancer Center
+  - Peking University Third Hospital
+  description: 'Specific location of hospital surgery was performed'
+  category: study_meta
+country:
+  values:
+  - China
+  - US
+  - Germany
+  description: 'Country of hospital surgery was performed'
+  category: study_meta
+NCBI_BioProject_accession:
+  values:
+  - PRJNA#
+  description: 'NCBI BioProject accession number to original project'
+  category: sample_meta
+SRA_sample_accession:
+  values:
+  - SRS#
+  description: 'SRA accession number to original sample'
+  category: sample_meta
+GEO_sample_accession:
+  values:
+  - GSE#
+  description: 'GEO accession number to original sample'
+  category: sample_meta
+synapse_sample_accession:
+  values:
+  - syn#
+  description: 'GEO accession number to original sample'
+  category: sample_meta
+ENA_sample_accession:
+  values:
+  - ERS#
+  description: 'ENA accession number to original sample'
+  category: sample_meta
+study_doi:
+  values:
+  - doi
+  description: doi of study
+study_pmid:
+  values:
+  - pmid
+  description: pmid of study
+  category: study_meta
+original_obs_names:
+  values:
+  - barcode
+  description: 'Study specific barcodes used for cells.'
+  category: cell_meta
+cell_type_coarse_study:
+  values:
+  - B-cell
+  - T-cell
+  - Endothelial
+  description: 'Study specific coarse cell type annotation if provided.'
+  category: cell_meta
+cell_type_middle_study:
+  values:
+  - B-cell (some marker gene)
+  - T-cell CD8
+  - T-cell CD4
+  description: 'Study specific fine cell type annotation if provided, can expand to multiple
+    columns if provided.'
+  category: cell_meta
+cell_type_study:
+  values:
+  - B-cell (some marker gene)
+  - T-cell CD8
+  - T-cell CD4
+  description: 'Study specific fine cell type annotation if provided, can expand to multiple
+    columns if provided.'
+  category: cell_meta
