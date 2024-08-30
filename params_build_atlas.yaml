@@ -1,0 +1,8 @@
+outdir: /data/scratch/marteau/results/crc-atlas/
+tmpDir: ${baseDir}/tmp/
+external_datasets: /data/projects/2022/CRCA/data/external_datasets/
+own_datasets: /data/projects/2022/CRCA/data/own_datasets/
+hgnc: ${baseDir}/tables/hgnc_complete_set_2023-03-02.txt
+cell_cycle_genes: ${baseDir}/tables/regev_lab_cell_cycle_genes_human.txt
+reference_meta: ${baseDir}/tables/reference_meta.yaml
+annotation: /data/projects/2022/CRCA/data/annotation/

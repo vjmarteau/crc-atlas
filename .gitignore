@@ -1,0 +1,13 @@
+.ipynb_checkpoints
+*.pyc
+*.pyc
+__pycache__
+*sif
+
+analyses/*/*.ipynb
+analyses/*/*.nb.html
+*.Rproj
+
+.nextflow*
+tmp/
+work/
