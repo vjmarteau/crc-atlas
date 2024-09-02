@@ -1,4 +1,4 @@
-# CoCa - The single-cell **Co**lorectal **C**ancer **A**tlas
+# The single-cell **Co**lorectal **C**ancer **A**tlas
   
 > Marteau, V., Nemati, N., Handler, K., Raju, D., Kvalem Soto, E., Fotakis, G., ... & Trajanoski, Z. (2024). High-resolution single-cell atlas reveals diversity and plasticity of tissue-resident neutrophils in colorectal cancer. bioRxiv. [doi:10.1101/2024.08.26.609563](https://www.biorxiv.org/content/10.1101/2024.08.26.609563v1)
 
@@ -41,7 +41,7 @@ which are available from zenodo.
 
 ## Contact
 
-For reproducibility issues or any other requests regarding single-cell data analysis, please use the [issue tracker](https://github.com/icbi-lab/luca/issues). For anything else, you can reach out to the corresponding author(s) as indicated in the manuscript.
+For reproducibility issues or any other requests regarding single-cell data analysis, please use the [issue tracker](https://github.com/icbi-lab/crc-atlas/issues). For anything else, you can reach out to the corresponding author(s) as indicated in the manuscript.
 
 ## Notes on reproducibility
 
@@ -51,6 +51,5 @@ Since cell-type annotations depend on clustering and the scANVI embedding, runni
 
 Below is the hardware used to execute the `build_atlas` workflow. While results should be consistent across CPUs/GPUs of the same generation, this has not been tested.
 
- * Compute node CPU: `Intel(R) Xeon(R) CPU E5-2699A v4 @ 2.40GHz` (2x)
- * GPU node CPU: `EPYC 7352 24-Core` (2x)
- * GPU node GPU: `Nvidia Quadro RTX 8000 GPU`
+ * Compute node CPU: `Intel(R) Xeon(R) Gold 6342 CPU @ 2.80GHz` (2x)
+ * GPU node GPU: `NVIDIA A100 80GB PCIe`
