@@ -1,0 +1,35 @@
+# Conda environment for python build_atlas workflow steps
+name: build_atlas-scanpy
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.12
+  - ipykernel
+  #- nb_conda_kernels
+  - numpy=1.26
+  - fast_matrix_market
+  - scanpy
+  - scipy
+  - jupytext
+  - papermill
+  - nbconvert
+  - matplotlib-base
+  - seaborn
+  - pandas
+  - anndata
+  - umap-learn
+  - leidenalg
+  - decoupler-py
+  - tqdm
+  - adjusttext
+  - altair_saver
+  - ipywidgets
+  - openpyxl
+  - vl-convert-python
+  - tabula-py
+  - pip:
+    - nxfvars
+    - scikit-misc
+    - /atlas_helpers

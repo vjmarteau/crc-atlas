@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: mambaorg/micromamba
+    
+%environment
+    export LANG=C.UTF-8 LC_ALL=C.UTF-8
+    export PATH=/opt/conda/bin:$PATH
+    export NUMBA_CACHE_DIR=/tmp/numba_cache
+    export MPLCONFIGDIR=/tmp/matplotlib_cache
+    export IPYTHONDIR=/tmp/ipython_cache
+
+%files
+    2024-build_atlas-scanpy.yaml /2024-build_atlas-scanpy.yaml
+    ../src /atlas_helpers/src
+    ../pyproject.toml /atlas_helpers/pyproject.toml
+    ../README.md /atlas_helpers/README.md
+
+%post
+    apt-get update
+    apt-get install -y gcc g++ gawk pigz git
+    micromamba install --yes --name base --file /2024-build_atlas-scanpy.yaml
+    rm -f /2024-build_atlas-scanpy.yaml
+    rm -rf /var/lib/{apt,dpkg,cache,log}
+    apt-get clean
+    micromamba clean --all --yes
+    apt-get remove -y gcc g++ git
+    apt autoremove -y
+    apt autoclean -y
+
+%labels
+    Version v1.0.0
