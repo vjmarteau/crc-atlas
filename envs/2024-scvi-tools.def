@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: mambaorg/micromamba
+    
+%environment
+    export LANG=C.UTF-8 LC_ALL=C.UTF-8
+    export PATH=/opt/conda/bin:$PATH
+    export NUMBA_CACHE_DIR=/tmp/numba_cache
+    export MPLCONFIGDIR=/tmp/matplotlib_cache
+    export IPYTHONDIR=/tmp/ipython_cache
+    export APPTAINERENV_TMPDIR=/tmp/apptainerenv_cache
+    export PYTORCH_KERNEL_CACHE_PATH=/tmp/torch_kernel_cache
+
+%files
+    2024-scvi-tools.yaml /2024-scvi-tools.yaml
+
+%post
+    apt-get update
+    apt-get install -y gcc g++ libgomp1 git
+    micromamba install --yes --name base --file /2024-scvi-tools.yaml
+    rm -f /2024-scvi-tools.yaml
+    rm -rf /var/lib/{apt,dpkg,cache,log}
+    apt-get clean
+    micromamba clean --all --yes
+    apt-get remove -y gcc g++ git
+    apt autoremove -y
+    apt autoclean -y
+
+%labels
+    Version v1.0.0

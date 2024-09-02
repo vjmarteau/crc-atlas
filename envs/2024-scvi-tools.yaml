@@ -1,0 +1,31 @@
+# Conda environment for scvi-tools compatible for the gpu on our cluster
+name: 2024-scvi-tools
+channels:
+  - pytorch
+  - conda-forge
+  - nvidia
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.12
+  - numpy=1.26
+  - pandas
+  - matplotlib-base
+  - seaborn
+  - scanpy
+  - anndata
+  - torchvision
+  - torchaudio
+  - pytorch-cuda
+  - pytorch
+  #- scvi-tools #install after cuda
+  - threadpoolctl
+  - tqdm
+  - leidenalg
+  - pip
+  - pip:
+    - nxfvars
+    - scikit-misc
+    - jax[cuda12]==0.4.26 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+    - git+https://github.com/scverse/scvi-tools.git@1.1.5
+  
