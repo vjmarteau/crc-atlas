@@ -14,6 +14,10 @@ library(stringr)
 library(orthogene)
 library(slingshot)
 library(RColorBrewer)
+library(EnhancedVolcano)
+library(tradeSeq)
+library(stats)
+library(ComplexHeatmap)
 
 ##### Functions for pre-processing 
 ### Function to read in counts matrix data generated from BD Seven Bridges platform (by Simona Baghai)
