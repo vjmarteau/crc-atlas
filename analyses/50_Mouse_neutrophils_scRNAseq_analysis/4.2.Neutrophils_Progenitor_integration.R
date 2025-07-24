@@ -148,3 +148,26 @@ ggsave("/scratch/khandl/CRC_atlas/figures/cell_cycle_plot.svg", width = 8, heigh
 ##### save integrated R object
 saveRDS(obj, "/data/khandl/CRC_atlas/neutrophils_progenitors_annotated.rds")
 obj <- readRDS("/data/khandl/CRC_atlas/neutrophils_progenitors_annotated.rds")
+
+##### plot expression of Il1a, Il1b and Il1r1
+p <- FeaturePlot(obj, features = "Il1a")
+ggsave("/scratch/khandl/CRC_atlas/genes/Il1a.svg", width = 8, height = 6, plot = p)
+p <- FeaturePlot(obj, features = "Il1b")
+ggsave("/scratch/khandl/CRC_atlas/genes/Il1b.svg", width = 8, height = 6, plot = p)
+p <- FeaturePlot(obj, features = "Il1r1")
+ggsave("/scratch/khandl/CRC_atlas/genes/Il1r1.svg", width = 8, height = 6, plot = p)
+p <- FeaturePlot(obj, features = c("Il1a","Il1b","Il1r1"))
+ggsave("/scratch/khandl/CRC_atlas/genes/all.svg", width = 8, height = 6, plot = p)
+
+
+Idents(obj) <- "tissue"
+p <- DotPlot(obj, features = c("Il1a","Il1b","Il1r1"), scale = FALSE)
+ggsave("/scratch/khandl/CRC_atlas/genes/per_tissue.svg", width = 8, height = 6, plot = p)
+
+Idents(obj) <- "phenotype"
+p <- DotPlot(obj, features = c("Il1a","Il1b","Il1r1"), scale = FALSE, dot.scale = 10)
+ggsave("/scratch/khandl/CRC_atlas/genes/per_phenotype.svg", width = 8, height = 6, plot = p)
+
+Idents(obj) <- "annotation"
+p <- DotPlot(obj, features = c("Il1a","Il1b","Il1r1"), scale = FALSE)
+ggsave("/scratch/khandl/CRC_atlas/genes/per_anno.svg", width = 8, height = 6, plot = p)
