@@ -92,10 +92,27 @@ current.cluster.ids <- c(0:11)
 new.cluster.ids <- c("Neutrophils", "Neutrophils","Neutrophils","Neutrophils", "Neutrophils","Neutrophils", "Neutrophils","Neutrophils","Neutrophils","ProNeutro","GMP","Neutrophils")
 obj$annotation <- plyr::mapvalues(x = obj$mnn.clusters, from = current.cluster.ids, to = new.cluster.ids)
 
-p <- DimPlot(obj,reduction = "umap",group.by = "annotation",raster=FALSE, label= TRUE, label.size = 5) 
+##### subcluster the Neutrophils 
+Idents(obj) <- "annotation"
+subCl <- FindSubCluster(obj,cluster = "Neutrophils",graph.name = "RNA_snn", 
+                        subcluster.name = "sub.cluster",resolution = 0.6)
+DimPlot(subCl, reduction = "umap", label = TRUE, group.by = "sub.cluster")
+
+## rename clusters
+current.cluster.ids <- c("GMP","Neutrophils_0","Neutrophils_1", "Neutrophils_2","Neutrophils_3","Neutrophils_4",
+                         "Neutrophils_5","Neutrophils_6", "Neutrophils_7","Neutrophils_8","Neutrophils_9", 
+                         "Neutrophils_10","Neutrophils_11", "ProNeutro")
+new.cluster.ids <- c("GMP","2","1", "0","3","7",
+                     "5","4", "8","9","6", 
+                     "10","10", "ProNeutro")
+subCl$annotation <- plyr::mapvalues(x = subCl$sub.cluster, from = current.cluster.ids, to = new.cluster.ids)
+DimPlot(subCl, group.by = "annotation", label = TRUE)
+
+p <- DimPlot(subCl,reduction = "umap",group.by = "annotation",raster=FALSE, label= TRUE, label.size = 5) 
 ggsave("/scratch/khandl/CRC_atlas/figures/umap_anno.svg", width = 8, height = 5, plot = p)
 
 ## marker genes used for annotation
+obj <- subCl
 Idents(obj) <- "annotation"
 p <- DotPlot(obj, features = c("Msi2","Meis1","Cd34","Elane","Cebpe","S100a9", "S100a8"),dot.scale = 10, scale = FALSE, assay = "RNA",cols = c("white","darkred")) + 
   theme(legend.title = element_text(size = 20), legend.text = element_text(size = 20)) + 
