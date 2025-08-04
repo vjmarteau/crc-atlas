@@ -92,10 +92,27 @@ current.cluster.ids <- c(0:11)
 new.cluster.ids <- c("Neutrophils", "Neutrophils","Neutrophils","Neutrophils", "Neutrophils","Neutrophils", "Neutrophils","Neutrophils","Neutrophils","ProNeutro","GMP","Neutrophils")
 obj$annotation <- plyr::mapvalues(x = obj$mnn.clusters, from = current.cluster.ids, to = new.cluster.ids)
 
-p <- DimPlot(obj,reduction = "umap",group.by = "annotation",raster=FALSE, label= TRUE, label.size = 5) 
+##### subcluster the Neutrophils 
+Idents(obj) <- "annotation"
+subCl <- FindSubCluster(obj,cluster = "Neutrophils",graph.name = "RNA_snn", 
+                        subcluster.name = "sub.cluster",resolution = 0.6)
+DimPlot(subCl, reduction = "umap", label = TRUE, group.by = "sub.cluster")
+
+## rename clusters
+current.cluster.ids <- c("GMP","Neutrophils_0","Neutrophils_1", "Neutrophils_2","Neutrophils_3","Neutrophils_4",
+                         "Neutrophils_5","Neutrophils_6", "Neutrophils_7","Neutrophils_8","Neutrophils_9", 
+                         "Neutrophils_10","Neutrophils_11", "ProNeutro")
+new.cluster.ids <- c("GMP","2","1", "0","3","7",
+                     "5","4", "8","9","6", 
+                     "10","10", "ProNeutro")
+subCl$annotation <- plyr::mapvalues(x = subCl$sub.cluster, from = current.cluster.ids, to = new.cluster.ids)
+DimPlot(subCl, group.by = "annotation", label = TRUE)
+
+p <- DimPlot(subCl,reduction = "umap",group.by = "annotation",raster=FALSE, label= TRUE, label.size = 5) 
 ggsave("/scratch/khandl/CRC_atlas/figures/umap_anno.svg", width = 8, height = 5, plot = p)
 
 ## marker genes used for annotation
+obj <- subCl
 Idents(obj) <- "annotation"
 p <- DotPlot(obj, features = c("Msi2","Meis1","Cd34","Elane","Cebpe","S100a9", "S100a8"),dot.scale = 10, scale = FALSE, assay = "RNA",cols = c("white","darkred")) + 
   theme(legend.title = element_text(size = 20), legend.text = element_text(size = 20)) + 
@@ -148,3 +165,26 @@ ggsave("/scratch/khandl/CRC_atlas/figures/cell_cycle_plot.svg", width = 8, heigh
 ##### save integrated R object
 saveRDS(obj, "/data/khandl/CRC_atlas/neutrophils_progenitors_annotated.rds")
 obj <- readRDS("/data/khandl/CRC_atlas/neutrophils_progenitors_annotated.rds")
+
+##### plot expression of Il1a, Il1b and Il1r1
+p <- FeaturePlot(obj, features = "Il1a")
+ggsave("/scratch/khandl/CRC_atlas/genes/Il1a.svg", width = 8, height = 6, plot = p)
+p <- FeaturePlot(obj, features = "Il1b")
+ggsave("/scratch/khandl/CRC_atlas/genes/Il1b.svg", width = 8, height = 6, plot = p)
+p <- FeaturePlot(obj, features = "Il1r1")
+ggsave("/scratch/khandl/CRC_atlas/genes/Il1r1.svg", width = 8, height = 6, plot = p)
+p <- FeaturePlot(obj, features = c("Il1a","Il1b","Il1r1"))
+ggsave("/scratch/khandl/CRC_atlas/genes/all.svg", width = 8, height = 6, plot = p)
+
+
+Idents(obj) <- "tissue"
+p <- DotPlot(obj, features = c("Il1a","Il1b","Il1r1"), scale = FALSE)
+ggsave("/scratch/khandl/CRC_atlas/genes/per_tissue.svg", width = 8, height = 6, plot = p)
+
+Idents(obj) <- "phenotype"
+p <- DotPlot(obj, features = c("Il1a","Il1b","Il1r1"), scale = FALSE, dot.scale = 10)
+ggsave("/scratch/khandl/CRC_atlas/genes/per_phenotype.svg", width = 8, height = 6, plot = p)
+
+Idents(obj) <- "annotation"
+p <- DotPlot(obj, features = c("Il1a","Il1b","Il1r1"), scale = FALSE)
+ggsave("/scratch/khandl/CRC_atlas/genes/per_anno.svg", width = 8, height = 6, plot = p)
