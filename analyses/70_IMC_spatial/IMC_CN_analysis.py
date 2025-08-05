@@ -46,6 +46,14 @@ warnings.filterwarnings("ignore", category=ConvergenceWarning)
 pd.set_option('future.no_silent_downcasting', True)
 # -
 
+# #### License
+# ```
+# # Copyright (c) 2025 Dietmar Rieder
+# #
+# # This source code is licensed under the BSD 3-Clause license found in the
+# # LICENSE file in the root directory of this source tree.
+# ```
+
 # ## Settings
 
 # #### Define input data file, annotation granularity and number of neighborhoods
