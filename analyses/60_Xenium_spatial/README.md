@@ -2,14 +2,14 @@
 
 ### Data availability
 
-Raw and processed data can be downloaded from the BioImage Archive ([S-BIAD2208](https://doi.org/10.6019/S-BIAD2208))
+Raw and processed data can be downloaded from the *BioImage Archive* ([S-BIAD2208](https://doi.org/10.6019/S-BIAD2208))
 
 
 ### Environments
 
 ```bash
-conda env create -n xenium -f 'envs/xenium.yml'
-conda env create -n nichecompass -f 'envs/nichecompass.yml'
+conda env create -n xenium -f '../../envs/xenium.yml'
+conda env create -n nichecompass -f '../../envs/nichecompass.yml'
 ```
 
 ### Notebooks

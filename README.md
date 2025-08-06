@@ -1,15 +1,14 @@
 # The single-cell **Co**lorectal **C**ancer **A**tlas
   
-> Marteau, V., Nemati, N., Handler, K., Raju, D., Kvalem Soto, E., Fotakis, G., ... & Trajanoski, Z. (2024). High-resolution single-cell atlas reveals diversity and plasticity of tissue-resident neutrophils in colorectal cancer. bioRxiv. [doi:10.1101/2024.08.26.609563](https://www.biorxiv.org/content/10.1101/2024.08.26.609563v1)
+> Marteau V., Nemati N., Handler K., ... & Arnodl IC. Trajanoski Z. (2025). Single-cell integration and multi-modal profiling reveals phenotypes and spatial organization of neutrophils in colorectal cancer. bioRxiv. [doi:10.1101/2024.08.26.609563](https://www.biorxiv.org/content/10.1101/2024.08.26.609563)
 
 The single cell colorectal cancer atlas is a resource integrating more than 4.27 million cells from 650 patients across 49 studies (77 datasets) representing 7 billion expression values. These samples encompass the full spectrum of disease progression, from normal colon to polyps, primary tumors, and metastases, covering both early and advanced stages of CRC.
 
 The atlas is publicly available for interactive exploration through a *cell-x-gene* instance. We also provide
-`h5ad` objects and a [scArches](https://scarches.readthedocs.io/en/latest/) model which allows to project custom datasets
-into the atlas. For more information, check out the
+`h5ad` objects which allows custom analyses of the atlas. For more information, check out the
 
  * [project website](https://crc.icbi.at) and
- * our [preprint](https://www.biorxiv.org/content/10.1101/2024.08.26.609563v1).
+ * our [preprint](https://www.biorxiv.org/content/10.1101/2024.08.26.609563).
 
 This repository contains the source-code to reproduce the single-cell data analysis for the paper.
 The analyses are wrapped into [nextflow](https://github.com/nextflow-io/nextflow/) pipelines, all dependencies are
@@ -33,6 +32,7 @@ which are available from zenodo.
 * `conf`: nextflow configuration files for all processes
 * `containers`: place for singularity image files. Not part of the git repo and gets created by the download command.
 * `data`: place for input data and results in different subfolders. Gets populated by the download commands and by running the workflows.
+* `envs`: conda environment yaml files
 * `src`: custom libraries and helper functions
 * `modules`: nextflow DSL2.0 modules
 * `subworkflows`: nextflow subworkflows
