@@ -210,7 +210,152 @@ def add_suffixes(input_dict):
     return updated_dict
 
 
+def marker_dotplot(adata, group_by='celltype', rank_key='rank_genes_groups', group=None, genes=None, log2FC_thres=1, padj_thres=1, font_size=10, n_genes=8, swap_axes=True, figsize=(12, 10), dpi=400, save=None):
+    import matplotlib as mpl
+    import matplotlib.pyplot as plt
+
+    if genes is not None:
+        de_genes=genes
+    else:
+        df = sc.get.rank_genes_groups_df(adata, group=group, key=rank_key)
+        df['neglfc'] = -np.abs(df.logfoldchanges)
+        df = df.sort_values(by=['pvals', 'neglfc'])
+        del df['neglfc']
+        df.rename(columns={'names': 'gene', 'logfoldchanges': 'log2FC', 'pvals': 'pvalue', 'pvals_adj': 'padj'}, inplace=True)
+        df = df[df['log2FC'] > log2FC_thres]
+        df = df[df['padj'] <= padj_thres]
+        de_genes=df.gene[0:n_genes]
     
+    with mpl.rc_context({'font.size': font_size, 
+                         'axes.labelsize': font_size,
+                         'axes.titlesize': font_size,
+                         'xtick.labelsize': font_size,
+                         'ytick.labelsize': font_size,
+                        }):
+        plt.figure(figsize=figsize)
+        fig = sc.pl.dotplot(adata, layer='norm', var_names=de_genes, groupby=group_by, dendrogram=False, swap_axes=swap_axes, return_fig=True)
+        fig.legend(colorbar_title='mean expression', size_title='% of cells ', width=1.7)
+        if save is not None:
+            fig.savefig(save, bbox_inches='tight', dpi=dpi)
+        
+    return list(de_genes)
+
+
+def run_pydeseq2(adata, formula='~ *CONTRAST*', contrasts={'trt_vs_ctrl': ['condition', 'trt', 'ctrl']}, aggregate_by='patient', n_random_split=1, min_cells=20, layer=None, filter_genes=None, alpha = 0.05, min_rep_refit=7, inference=None, sort=True, n_jobs=1):
+    
+    from pydeseq2.dds import DeseqDataSet
+    from pydeseq2.default_inference import DefaultInference
+    from pydeseq2.ds import DeseqStats
+
+    results = {}
+    conditions_unique = set(contrast[0] for contrast in contrasts.values())
+
+    dds_fit = {}
+    for cond in conditions_unique:
+        formula = formula.replace('*CONTRAST*', cond)
+        counts, metadf = aggregate_counts(adata, group_by=cond, aggregate_by=aggregate_by, layer=layer, n_random_split=n_random_split, min_cells=min_cells)
+        dds = DeseqDataSet(adata=None, counts=counts.astype(int), design=formula, metadata=metadf, min_replicates=min_rep_refit, quiet=True, n_cpus=n_jobs)
+        dds.deseq2()
+        dds_fit[cond] = dds
+
+    if inference is None:
+        inference = DefaultInference(n_cpus=n_jobs)
+        
+    for cont_name, cont in contrasts.items():
+        ds = DeseqStats(dds_fit[cont[0]], contrast=cont, alpha=alpha, cooks_filter=True, independent_filter=True, quiet=True, inference=inference)
+        ds.summary()
+        df = ds.results_df
+        if sort:
+            df = df.loc[df.abs().sort_values(by=['pvalue', 'log2FoldChange']).index]
+        results[cont_name] = df
+
+    return results, dds_fit
+
+
+def aggregate_counts(adata, group_by='condition', aggregate_by='patient', layer=None,
+                     n_random_split=1, min_cells=10, fun='sum', n_jobs=1, prefer='threads', batch_size=None):
+
+    import numpy as np
+    import pandas as pd
+    import scipy.sparse as sp
+    from joblib import Parallel, delayed
+
+    if group_by not in adata.obs.columns or aggregate_by not in adata.obs.columns:
+        raise ValueError("Both 'group_by' and 'aggregate_by' must be columns in adata.obs")
+
+    if layer is not None:
+        counts = adata.layers[layer]
+    else:
+        counts = adata.X
+
+    obs_df = adata.obs.copy()
+    var_names = adata.var_names.to_list()
+    groups_all = obs_df.groupby([group_by, aggregate_by], observed=False).size()
+    groups = groups_all[groups_all >= min_cells].index.tolist()
+
+    if batch_size is None:
+        batch_size = max(1, len(groups) // (n_jobs * 4))
+
+    def aggregate_group_counts(group, obs_df, counts):
+        condition, patient = group
+        group_cells = (obs_df[group_by] == condition) & (obs_df[aggregate_by] == patient)
+        ix = np.where(group_cells)[0]
+
+        if n_random_split > 1:
+            np.random.shuffle(ix)
+            ix = np.array_split(ix, n_random_split)
+        else:
+            ix = [ix]
+
+        local_counts = []
+        local_metadata = []
+        local_names = []
+
+        for i, split in enumerate(ix):
+            if len(split) == 0:
+                continue
+
+            if sp.issparse(counts):
+                data = counts[split].sum(axis=0).A1 if fun == 'sum' else counts[split].mean(axis=0).A1
+            else:
+                data = np.sum(counts[split], axis=0) if fun == 'sum' else np.mean(counts[split], axis=0)
+
+            local_counts.append(data)
+            group_name = f"{condition}_{patient}"
+            if n_random_split > 1:
+                group_name = f"{group_name}_{i}"
+            local_names.append(group_name)
+
+            metadata_entry = obs_df.iloc[split].copy()
+            metadata_entry = metadata_entry.loc[:, metadata_entry.nunique() == 1].iloc[0]
+            metadata_entry[group_by] = condition
+            metadata_entry[aggregate_by] = f"{patient}_{i}" if n_random_split > 1 else patient
+            local_metadata.append(metadata_entry)
+
+        return local_counts, local_names, local_metadata
+
+    results = Parallel(n_jobs=n_jobs, prefer=prefer, batch_size=batch_size)(
+        delayed(aggregate_group_counts)(group, obs_df, counts) for group in groups
+    )
+
+    aggregated_counts = []
+    group_names = []
+    aggregated_metadata = []
+
+    for counts_list, names_list, metadata_list in results:
+        aggregated_counts.extend(counts_list)
+        group_names.extend(names_list)
+        aggregated_metadata.extend(metadata_list)
+
+    aggregated_counts_df = pd.DataFrame(aggregated_counts, columns=var_names)
+    aggregated_counts_df.index = group_names
+
+    aggregated_metadata_df = pd.DataFrame(aggregated_metadata)
+    aggregated_metadata_df.index = group_names
+
+    return aggregated_counts_df, aggregated_metadata_df
+
+
 ### Tangram ------------------------------------------------------------------------------------------------------------
 
 def run_tangram(adata, refdata=None, tgmap=None, ref_label='celltype', threshold=0.9, prob_threshold=0, adata_layer=None, refdata_layer=None, genes=None, gene_to_lowercase=False, device='cuda'):
