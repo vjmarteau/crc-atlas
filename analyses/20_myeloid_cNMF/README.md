@@ -2,13 +2,13 @@
 
 ### Data availability
 
-Data can be downloaded from the ([project website](https://crc.icbi.at/))
+Data can be downloaded from the [project website](https://crc.icbi.at/)
 
 
 ### Environments
 
 ```bash
-conda env create -n cNMF -f 'envs/cNMF.yml'
+conda env create -n cNMF -f 'envs/cNMF.yaml'
 ```
 
 ### Notebooks
