@@ -15,9 +15,9 @@ conda env create -n nichecompass -f 'envs/nichecompass.yml'
 ### Notebooks
 
 Notebooks for data analysis: 
-00_prepare_data.ipynb: Select and merge samples from Xenium output data 
-01_preprocessing.ipynb: Preprocess the mergde data 
-02_annotation.ipynb: Cell type annotation 
-03_nichecompass.ipynb: NicheCompass analysis 
-04_niches.ipynb: Niche analysis 
-05_results.ipynb: Code to reproduce the figures from the processed data 
+* `00_prepare_data.ipynb`: Select and merge samples from Xenium output data 
+* `01_preprocessing.ipynb`: Preprocess the merged data
+* `02_annotation.ipynb`: Cell type annotation
+* `03_nichecompass.ipynb`: NicheCompass analysis
+* `04_niches.ipynb`: Niche analysis
+* `05_results.ipynb`: Code to reproduce the figures from the processed data
