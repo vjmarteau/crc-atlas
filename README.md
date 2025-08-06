@@ -1,6 +1,6 @@
 # The single-cell **Co**lorectal **C**ancer **A**tlas
   
-> Marteau V., Nemati N., Handler K., ... & Arnodl IC. Trajanoski Z. (2025). Single-cell integration and multi-modal profiling reveals phenotypes and spatial organization of neutrophils in colorectal cancer. bioRxiv. [doi:10.1101/2024.08.26.609563](https://www.biorxiv.org/content/10.1101/2024.08.26.609563)
+> Marteau V., Nemati N., Handler K., ... & Arnold IC, Salcher S., Trajanoski Z. (2025). Single-cell integration and multi-modal profiling reveals phenotypes and spatial organization of neutrophils in colorectal cancer. bioRxiv. [doi:10.1101/2024.08.26.609563](https://www.biorxiv.org/content/10.1101/2024.08.26.609563)
 
 The single cell colorectal cancer atlas is a resource integrating more than 4.27 million cells from 650 patients across 49 studies (77 datasets) representing 7 billion expression values. These samples encompass the full spectrum of disease progression, from normal colon to polyps, primary tumors, and metastases, covering both early and advanced stages of CRC.
 
